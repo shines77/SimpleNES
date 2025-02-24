@@ -42,7 +42,8 @@ public:
     void setDataAddress(Byte addr);
     void setScroll(Byte scroll);
     void setData(Byte data);
-    //Read by the program
+
+    // Read by the program
     Byte getStatus();
     Byte getData();
     Byte getOAMData();

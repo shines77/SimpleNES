@@ -17,8 +17,8 @@ namespace snes
 
 int main(int argc, char * argv[])
 {
-    std::ofstream logFile ("SimpleNes.log"), cpuTraceFile;
-    snes::TeeStream logTee (logFile, std::cout);
+    std::ofstream logFile("SimpleNes.log"), cpuTraceFile;
+    snes::TeeStream logTee(logFile, std::cout);
 
     if (logFile.is_open() && logFile.good())
         snes::Log::get().setLogStream(logTee);
@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
     snes::Emulator emulator;
 
     for (int i = 1; i < argc; i++) {
-        std::string arg (argv[i]);
+        std::string arg(argv[i]);
         if (arg == "-h" || arg == "--help") {
             std::cout << "SimpleNES is a simple NES emulator.\n"
                       << "It can run off .nes images.\n"
@@ -54,12 +54,12 @@ int main(int argc, char * argv[])
                       << "                       set automatically to fit the aspect ratio)\n"
                       << "                       This option is mutually exclusive to --width\n"
                       << "-C, --conf             Set the keybindings file's path. The default \n"
-                      << "                       keybindings file is keybindings.conf.\n"
+                      << "                       keybindings file is KeyBindings.conf.\n"
                       << std::endl;
             return 0;
         } else if (std::strcmp(argv[i], "--log-cpu") == 0) {
             snes::Log::get().setLevel(snes::CpuTrace);
-            cpuTraceFile.open("sn.cpudump");
+            cpuTraceFile.open("snes.cpudump");
             snes::Log::get().setCpuTraceStream(cpuTraceFile);
             LOG(snes::Info) << "CPU logging set." << std::endl;
         } else if (std::strcmp(argv[i], "-s") == 0 || std::strcmp(argv[i], "--scale") == 0) {
@@ -90,7 +90,7 @@ int main(int argc, char * argv[])
             if (i + 1 < argc)
                 keyBindingsConf = argv[i + 1];
             else
-                LOG(snes::Error) << "Setting keybindings.conf's path from argument failed" << std::endl;
+                LOG(snes::Error) << "Setting KeyBindings.conf's path from argument failed" << std::endl;
             ++i;
         } else if (argv[i][0] != '-') {
             path = argv[i];

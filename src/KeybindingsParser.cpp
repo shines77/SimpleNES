@@ -173,7 +173,7 @@ void parseControllerConf(std::string filepath,
             }
             auto i = std::distance(std::begin(buttonStrings), it);
             auto key = std::distance(std::begin(keys), it2);
-            (state == Player1 ? p1 : p2)[i] = static_cast<sf::Keyboard::Key>(key);
+            ((state == Player1) ? p1 : p2)[i] = static_cast<sf::Keyboard::Key>(key);
         } else {
             LOG(Error) << "Invalid line in key configuration at Line " << line_no << std::endl;
         }

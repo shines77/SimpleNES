@@ -42,7 +42,7 @@ bool Cartridge::hasExtendedRAM()
 
 bool Cartridge::loadFromFile(std::string path)
 {
-    std::ifstream romFile (path, std::ios_base::binary | std::ios_base::in);
+    std::ifstream romFile(path, std::ios_base::binary | std::ios_base::in);
     if (!romFile) {
         LOG(Error) << "Could not open ROM file from path: " << path << std::endl;
         return false;

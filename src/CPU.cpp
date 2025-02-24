@@ -2,6 +2,8 @@
 #include "CPUOpcodes.h"
 #include "Log.h"
 
+#include <stdint.h>
+#include <stddef.h>
 #include <iomanip>
 
 namespace snes {
@@ -31,16 +33,16 @@ void CPU::interrupt(InterruptType type)
 {
     switch (type)
     {
-    case InterruptType::NMI:
-        m_pendingNMI = true;
-        break;
+        case InterruptType::NMI:
+            m_pendingNMI = true;
+            break;
 
-    case InterruptType::IRQ:
-        m_pendingIRQ = true;
-        break;
+        case InterruptType::IRQ:
+            m_pendingIRQ = true;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -67,7 +69,7 @@ void CPU::interruptSequence(InterruptType type)
 
     f_I = true;
 
-    switch (type)
+    switch (type) 
     {
         case IRQ:
         case BRK_:
@@ -492,7 +494,7 @@ bool CPU::executeType1(Byte opcode)
                     // High carry means "no borrow", thus negate and subtract
                     std::uint16_t subtrahend = m_bus.read(location),
                                 diff = r_A - subtrahend - !f_C;
-                    //if the ninth bit is 1, the resulting number is negative => borrow => low carry
+                    // if the ninth bit is 1, the resulting number is negative => borrow => low carry
                     f_C = !((diff & 0x100) != 0);
                     // Same as ADC, except instead of the subtrahend,
                     // substitute with it's one complement

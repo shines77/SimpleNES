@@ -64,6 +64,7 @@ protected:
     Cartridge& m_cartridge;
     Type m_type;
 };
+
 } // namespace snes
 
 #endif // SNES_MAPPER_H

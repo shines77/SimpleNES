@@ -8,7 +8,9 @@ PPU::PPU(PictureBus& bus, VirtualScreen& screen) :
     m_screen(screen),
     m_spriteMemory(64 * 4),
     m_pictureBuffer(ScanlineVisibleDots, std::vector<sf::Color>(VisibleScanlines, sf::Color::Magenta))
-{}
+{
+    //
+}
 
 void PPU::reset()
 {
@@ -42,12 +44,12 @@ void PPU::step()
                 m_vblank = m_sprZeroHit = false;
             } else if (m_cycle == ScanlineVisibleDots + 2 && m_showBackground && m_showSprites) {
                 // Set bits related to horizontal position
-                m_dataAddress &= ~0x41f; //Unset horizontal bits
-                m_dataAddress |= m_tempAddress & 0x41f; //Copy
+                m_dataAddress &= ~0x41f;    // Unset horizontal bits
+                m_dataAddress |= m_tempAddress & 0x41f;     // Copy
             } else if (m_cycle > 280 && m_cycle <= 304 && m_showBackground && m_showSprites) {
                 // Set vertical bits
-                m_dataAddress &= ~0x7be0; //Unset bits related to horizontal
-                m_dataAddress |= m_tempAddress & 0x7be0; //Copy
+                m_dataAddress &= ~0x7be0;   // Unset bits related to horizontal
+                m_dataAddress |= m_tempAddress & 0x7be0;    // Copy
             }
 
             //if (m_cycle > 257 && m_cycle < 320)
@@ -78,17 +80,17 @@ void PPU::step()
                     auto x_fine = (m_fineXScroll + x) % 8;
                     if (!m_hideEdgeBackground || x >= 8) {
                         // fetch tile
-                        auto addr = 0x2000 | (m_dataAddress & 0x0FFF); //mask off fine y
+                        auto addr = 0x2000 | (m_dataAddress & 0x0FFF);  // mask off fine y
                         //auto addr = 0x2000 + x / 8 + (y / 8) * (ScanlineVisibleDots / 8);
                         Byte tile = read(addr);
 
                         // fetch pattern
                         // Each pattern occupies 16 bytes, so multiply by 16
-                        addr = (tile * 16) + ((m_dataAddress >> 12/*y % 8*/) & 0x7); //Add fine y
-                        addr |= int(m_bgPage) << 12; // set whether the pattern is in the high or low page
+                        addr = (tile * 16) + ((m_dataAddress >> 12/*y % 8*/) & 0x7);    // Add fine y
+                        addr |= int(m_bgPage) << 12;                // set whether the pattern is in the high or low page
                         // Get the corresponding bit determined by (8 - x_fine) from the right
                         bgColor = (read(addr) >> (7 ^ x_fine)) & 1; // bit 0 of palette entry
-                        bgColor |= ((read(addr + 8) >> (7 ^ x_fine)) & 1) << 1; //bit 1
+                        bgColor |= ((read(addr + 8) >> (7 ^ x_fine)) & 1) << 1;         // bit 1
 
                         bgOpaque = (bgColor != 0); // flag used to calculate final pixel with the sprite pixel
 
@@ -128,9 +130,9 @@ void PPU::step()
 
                         int x_shift = (x - spr_x) % 8, y_offset = (y - spr_y) % length;
 
-                        if ((attribute & 0x40) == 0) // If not flipping horizontally
+                        if ((attribute & 0x40) == 0)    // If not flipping horizontally
                             x_shift ^= 7;
-                        if ((attribute & 0x80) != 0) // If flipping vertically
+                        if ((attribute & 0x80) != 0)    // If flipping vertically
                             y_offset ^= (length - 1);
 
                         Address addr = 0;
@@ -177,21 +179,21 @@ void PPU::step()
                     paletteAddr = 0;
                 //else bgColor
 
-                m_pictureBuffer[x][y] = sf::Color(colors[m_bus.readPalette(paletteAddr)]);
+                m_pictureBuffer[x][y] = sf::Color(snes::colors[m_bus.readPalette(paletteAddr)]);
             } else if (m_cycle == ScanlineVisibleDots + 1 && m_showBackground) {
                 // Shamelessly copied from nesdev wiki
-                if ((m_dataAddress & 0x7000) != 0x7000) { // if fine Y < 7
-                    m_dataAddress += 0x1000;              // increment fine Y
+                if ((m_dataAddress & 0x7000) != 0x7000) {   // if fine Y < 7
+                    m_dataAddress += 0x1000;                // increment fine Y
                 } else {
-                    m_dataAddress &= ~0x7000;             // fine Y = 0
-                    int y = (m_dataAddress & 0x03E0) >> 5;    // let y = coarse Y
+                    m_dataAddress &= ~0x7000;               // fine Y = 0
+                    int y = (m_dataAddress & 0x03E0) >> 5;  // let y = coarse Y
                     if (y == 29) {
-                        y = 0;                                // coarse Y = 0
-                        m_dataAddress ^= 0x0800;              // switch vertical nametable
+                        y = 0;                              // coarse Y = 0
+                        m_dataAddress ^= 0x0800;            // switch vertical nametable
                     } else if (y == 31) {
-                        y = 0;                                // coarse Y = 0, nametable not switched
+                        y = 0;                              // coarse Y = 0, nametable not switched
                     } else {
-                        y += 1;                               // increment coarse Y
+                        y += 1;                             // increment coarse Y
                     }
                     m_dataAddress = (m_dataAddress & ~0x03E0) | (y << 5);
                                                             // put coarse Y back into m_dataAddress

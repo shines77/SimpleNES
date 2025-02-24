@@ -97,7 +97,7 @@ void Emulator::run(std::string rom_path)
                     LOG(Info) << "Paused." << std::endl;
                 }
             } else if (pause && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3) {
-                for (int i = 0; i < 29781; ++i) {
+                for (int i = 0; i < 29781; i++) {
                     // Around one frame
 
                     // PPU

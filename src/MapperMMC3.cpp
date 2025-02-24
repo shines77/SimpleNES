@@ -51,7 +51,7 @@ Byte MapperMMC3::readPRG(Address addr)
     }
 
     if (addr >= 0xE000) {
-        return *(m_prgBank3  +  (addr & 0x1fff));
+        return *(m_prgBank3 + (addr & 0x1fff));
     }
 
     return 0;
@@ -67,7 +67,7 @@ Byte MapperMMC3::readCHR(Address addr)
         const auto offset = addr & 0x3ff;
         return m_cartridge.getVROM()[baseAddress + offset];
     } else if (addr <= 0x2fff) {
-        return m_mirroringRam[addr-0x2000];
+        return m_mirroringRam[addr - 0x2000];
     }
 
     return 0;

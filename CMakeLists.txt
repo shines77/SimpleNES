@@ -19,7 +19,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/;${CMAKE_MODULE_PATH};$
 
 # Add sources
 file(GLOB SOURCES
-    "${PROJECT_SOURCE_DIR}/main.cpp"
+    "${PROJECT_SOURCE_DIR}/src/SimpleNES.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
