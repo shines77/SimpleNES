@@ -1,22 +1,28 @@
-#ifndef MAPPERCNROM_H
-#define MAPPERCNROM_H
+#ifndef SNES_MAPPER_CNROM_H
+#define SNES_MAPPER_CNROM_H
+
+#pragma once
+
 #include "Mapper.h"
 
-namespace sn
+namespace snes {
+
+class MapperCNROM : public Mapper
 {
-    class MapperCNROM : public Mapper
-    {
-        public:
-            MapperCNROM(Cartridge& cart);
-            void writePRG (Address addr, Byte value);
-            Byte readPRG (Address addr);
+public:
+    MapperCNROM(Cartridge& cart);
+    void writePRG (Address addr, Byte value);
+    Byte readPRG (Address addr);
 
-            Byte readCHR (Address addr);
-            void writeCHR (Address addr, Byte value);
-        private:
-            bool m_oneBank;
+    Byte readCHR (Address addr);
+    void writeCHR (Address addr, Byte value);
 
-            Address m_selectCHR;
-    };
-}
-#endif // MAPPERCNROM_H
+private:
+    bool m_oneBank;
+
+    Address m_selectCHR;
+};
+
+} // namespace snes
+
+#endif // SNES_MAPPER_CNROM_H

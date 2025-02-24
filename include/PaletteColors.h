@@ -1,3 +1,8 @@
+#ifndef SNES_PALETTER_COLORS_H
+#define SNES_PALETTER_COLORS_H
+
+#pragma once
+
 #include <SFML/Config.hpp>
 
 //Colors in RGBA (8 bit colors)
@@ -11,3 +16,5 @@ const sf::Uint32 colors[] = {
             0xfffeffff, 0xc0dfffff, 0xd3d2ffff, 0xe8c8ffff, 0xfbc2ffff, 0xfec4eaff, 0xfeccc5ff, 0xf7d8a5ff,
             0xe4e594ff, 0xcfef96ff, 0xbdf4abff, 0xb3f3ccff, 0xb5ebf2ff, 0xb8b8b8ff, 0x000000ff, 0x000000ff,
         };
+
+#endif // SNES_PALETTER_COLORS_H

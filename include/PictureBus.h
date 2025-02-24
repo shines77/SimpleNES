@@ -1,29 +1,38 @@
-#ifndef PICTUREBUS_H
-#define PICTUREBUS_H
-#include <vector>
+#ifndef SNES_PICTURE_BUS_H
+#define SNES_PICTURE_BUS_H
+
+#pragma once
+
 #include "Cartridge.h"
 #include "Mapper.h"
 
-namespace sn
+#include <vector>
+
+namespace snes {
+
+class PictureBus
 {
-    class PictureBus
-    {
-        public:
-            PictureBus();
-            Byte read(Address addr);
-            void write(Address addr, Byte value);
+public:
+    PictureBus();
 
-            bool setMapper(Mapper *mapper);
-            Byte readPalette(Byte paletteAddr);
-            void updateMirroring();
-            void scanlineIRQ();
-        private:
-            std::size_t NameTable0, NameTable1, NameTable2, NameTable3; //indices where they start in RAM vector
+    Byte read(Address addr);
+    void write(Address addr, Byte value);
 
-            std::vector<Byte> m_palette;
+    bool setMapper(Mapper *mapper);
+    Byte readPalette(Byte paletteAddr);
+    void updateMirroring();
+    void scanlineIRQ();
 
-            std::vector<Byte> m_RAM;
-            Mapper* m_mapper;
-    };
-}
-#endif // PICTUREBUS_H
+private:
+    // indices where they start in RAM vector
+    std::size_t NameTable0, NameTable1, NameTable2, NameTable3;
+
+    std::vector<Byte> m_palette;
+
+    std::vector<Byte> m_RAM;
+    Mapper* m_mapper;
+};
+
+} // namespace snes
+
+#endif // SNES_PICTURE_BUS_H

@@ -1,21 +1,27 @@
-#ifndef VIRTUALSCREEN_H
-#define VIRTUALSCREEN_H
+#ifndef SNES_VIRTUALSCREEN_H
+#define SNES_VIRTUALSCREEN_H
+
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
-namespace sn
+namespace snes {
+
+class VirtualScreen : public sf::Drawable
 {
-    class VirtualScreen : public sf::Drawable
-    {
-    public:
-        void create (unsigned int width, unsigned int height, float pixel_size, sf::Color color);
-        void setPixel (std::size_t x, std::size_t y, sf::Color color);
+public:
+    void create(unsigned int width, unsigned int height, float pixel_size, sf::Color color);
+    void setPixel(std::size_t x, std::size_t y, sf::Color color);
 
-    private:
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+private:
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        sf::Vector2u m_screenSize;
-        float m_pixelSize; //virtual pixel size in real pixels
-        sf::VertexArray m_vertices;
-    };
+    sf::Vector2u m_screenSize;
+    // virtual pixel size in real pixels
+    float m_pixelSize;
+    sf::VertexArray m_vertices;
 };
-#endif // VIRTUALSCREEN_H
+
+} // namespace snes
+
+#endif // SNES_VIRTUALSCREEN_H

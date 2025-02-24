@@ -1,71 +1,73 @@
-#ifndef CPU_H
-#define CPU_H
+#ifndef SNES_CPU_H
+#define SNES_CPU_H
+
+#pragma once
+
 #include "CPUOpcodes.h"
 #include "MainBus.h"
 
-namespace sn
+namespace snes {
+
+class CPU
 {
+public:
+    CPU(MainBus &mem);
 
-    class CPU
-    {
-        public:
+    void step();
+    void reset();
+    void reset(Address start_addr);
+    void log();
 
-            CPU(MainBus &mem);
+    Address getPC() { return r_PC; }
+    void skipDMACycles();
 
-            void step();
-            void reset();
-            void reset(Address start_addr);
-            void log();
+    void interrupt(InterruptType type);
 
-            Address getPC() { return r_PC; }
-            void skipDMACycles();
+private:
+    void interruptSequence(InterruptType type);
 
-            void interrupt(InterruptType type);
+    // Instructions are split into five sets to make decoding easier.
+    // These functions return true if they succeed
+    bool executeImplied(Byte opcode);
+    bool executeBranch(Byte opcode);
+    bool executeType0(Byte opcode);
+    bool executeType1(Byte opcode);
+    bool executeType2(Byte opcode);
 
-        private:
-            void interruptSequence(InterruptType type);
+    Address readAddress(Address addr);
 
-            //Instructions are split into five sets to make decoding easier.
-            //These functions return true if they succeed
-            bool executeImplied(Byte opcode);
-            bool executeBranch(Byte opcode);
-            bool executeType0(Byte opcode);
-            bool executeType1(Byte opcode);
-            bool executeType2(Byte opcode);
+    void pushStack(Byte value);
+    Byte pullStack();
 
-            Address readAddress(Address addr);
+    // If a and b are in different pages, increases the m_SkipCycles by 1
+    void skipPageCrossCycle(Address a, Address b);
+    void setZN(Byte value);
 
-            void pushStack(Byte value);
-            Byte pullStack();
+    int m_skipCycles;
+    int m_cycles;
 
-            //If a and b are in different pages, increases the m_SkipCycles by 1
-            void skipPageCrossCycle(Address a, Address b);
-            void setZN(Byte value);
+    // Registers
+    Address r_PC;
+    Byte r_SP;
+    Byte r_A;
+    Byte r_X;
+    Byte r_Y;
 
-            int m_skipCycles;
-            int m_cycles;
+    // Status flags.
+    // Is storing them in one byte better ?
+    bool f_C;
+    bool f_Z;
+    bool f_I;
+    bool f_D;
+    bool f_V;
+    bool f_N;
 
-            //Registers
-            Address r_PC;
-            Byte r_SP;
-            Byte r_A;
-            Byte r_X;
-            Byte r_Y;
+    bool m_pendingNMI;
+    bool m_pendingIRQ;
 
-            //Status flags.
-            //Is storing them in one byte better ?
-            bool f_C;
-            bool f_Z;
-            bool f_I;
-            bool f_D;
-            bool f_V;
-            bool f_N;
-
-            bool m_pendingNMI;
-            bool m_pendingIRQ;
-
-            MainBus &m_bus;
-    };
-
+    MainBus &m_bus;
 };
-#endif // CPU_H
+
+} // namespace nes
+
+#endif // SNES_CPU_H

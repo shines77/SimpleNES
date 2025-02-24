@@ -1,13 +1,21 @@
+#ifndef SNES_MAPPER_MMC3_H
+#define SNES_MAPPER_MMC3_H
+
 #pragma once
+
 #include "Mapper.h"
+
+#include <stdint.h>
+#include <stddef.h>
 #include <array>
+#include <vector>
+#include <functional>
 
-namespace sn
+namespace snes {
+
+class MapperMMC3 : public Mapper
 {
-
-  class MapperMMC3 : public Mapper
-  {
-  public:
+public:
     MapperMMC3(Cartridge &cart, std::function<void()> interrupt_cb, std::function<void(void)> mirroring_cb);
 
     Byte readPRG(Address addr);
@@ -19,7 +27,7 @@ namespace sn
 
     void scanlineIRQ();
 
-  private:
+private:
     // Control variables
     uint32_t m_targetRegister;
     bool m_prgBankMode;
@@ -44,6 +52,8 @@ namespace sn
     NameTableMirroring m_mirroring;
     std::function<void(void)> m_mirroringCallback;
     std::function<void()> m_interruptCallback;
-  };
+};
 
 } // namespace sn
+
+#endif // SNES_MAPPER_MMC3_H

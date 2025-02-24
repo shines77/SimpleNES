@@ -1,26 +1,32 @@
-#ifndef MAPPERUXROM_H
-#define MAPPERUXROM_H
+#ifndef SNES_MAPPER_UXROM_H
+#define SNES_MAPPER_UXROM_H
+
+#pragma once
+
 #include "Mapper.h"
 
-namespace sn
+namespace snes {
+
+class MapperUxROM : public Mapper
 {
-    class MapperUxROM : public Mapper
-    {
-        public:
-            MapperUxROM(Cartridge& cart);
-            void writePRG (Address addr, Byte value);
-            Byte readPRG (Address addr);
+public:
+    MapperUxROM(Cartridge& cart);
 
-            Byte readCHR (Address addr);
-            void writeCHR (Address addr, Byte value);
-        private:
-            bool m_usesCharacterRAM;
+    void writePRG (Address addr, Byte value);
+    Byte readPRG (Address addr);
 
-            const Byte* m_lastBankPtr;
-            Address m_selectPRG;
+    Byte readCHR (Address addr);
+    void writeCHR (Address addr, Byte value);
 
-            std::vector<Byte> m_characterRAM;
+private:
+    bool m_usesCharacterRAM;
 
-    };
-}
-#endif // MAPPERUXROM_H
+    const Byte* m_lastBankPtr;
+    Address m_selectPRG;
+
+    std::vector<Byte> m_characterRAM;
+};
+
+} // namespace snes
+
+#endif // SNES_MAPPER_UXROM_H
