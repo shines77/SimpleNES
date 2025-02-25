@@ -26,7 +26,13 @@ void CPU::reset(Address start_addr)
     f_I = true;
     f_C = f_D = f_N = f_V = f_Z = false;
     r_PC = start_addr;
-    r_SP = 0xfd; //documented startup state
+    // documented startup state
+    r_SP = 0xfd;
+}
+
+void CPU::log()
+{
+    //
 }
 
 void CPU::interrupt(InterruptType type)

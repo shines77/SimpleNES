@@ -2,8 +2,8 @@
 #include <cstring>
 #include "Log.h"
 
-namespace snes 
-{
+namespace snes {
+
 MainBus::MainBus() :
     m_RAM(0x800, 0),
     m_mapper(nullptr)
@@ -100,8 +100,7 @@ const Byte* MainBus::getPagePtr(Byte page)
     } else if (addr < 0x6000) {
         LOG(Error) << "Expansion ROM access attempted, which is unsupported" << std::endl;
     } else if (addr < 0x8000) {
-        if (m_mapper->hasExtendedRAM())
-        {
+        if (m_mapper->hasExtendedRAM()) {
             return &m_extRAM[addr - 0x6000];
         }
     } else {

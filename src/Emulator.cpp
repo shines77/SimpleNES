@@ -119,11 +119,11 @@ void Emulator::run(std::string rom_path)
             m_cycleTimer = std::chrono::high_resolution_clock::now();
 
             while (m_elapsedTime > m_cpuCycleDuration) {
-                //PPU
+                // PPU
                 m_ppu.step();
                 m_ppu.step();
                 m_ppu.step();
-                //CPU
+                // CPU
                 m_cpu.step();
 
                 m_elapsedTime -= m_cpuCycleDuration;
